@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Entities\" />
+    <Folder Include="Data\Template\" />
+    <Folder Include="Data\Output\" />
   </ItemGroup>
 
 </Project>

@@ -4,17 +4,17 @@
     {
         public override bool Selectable => false;
 
-        private string _text;
+        public string Text { get; set; }
 
         public Label(string text, bool inline = false)
             : base(inline)
         {
-            _text = text;
+            Text = text;
         }
 
         public override void Render(bool selected)
         {
-            Console.Write(_text);
+            Console.Write(Text);
 
             base.Render(selected);
         }
