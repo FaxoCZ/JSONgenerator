@@ -32,7 +32,7 @@ namespace JSONgenerator.Presentation.Windows
                                         .FullName)!
                                         .FullName)!
                                         .FullName
-                                        + "\\Data\\Output";
+                                        + "\\Data\\Output"; ; ;
 
             FileItem = new FileItem("", 0, DateTime.Now, "");
 
@@ -53,14 +53,17 @@ namespace JSONgenerator.Presentation.Windows
             RegisterComponent(_enterButton);
 
             _parentButton.Clicked += ParentButtonClicked;
+            _enterButton.Clicked += EnterButtonClicked;
 
             LoadFiles();
 
         }
         private void LoadFiles()
         {
+            Console.Clear();y
             foreach (string dir in Directory.GetDirectories(CurrentDirectory))
             {
+
                 _table.Items.Add(new FileItem
                 (
                     Path.GetFileName(dir),
@@ -79,7 +82,9 @@ namespace JSONgenerator.Presentation.Windows
                     "File"
                 ));
             }
-            _label.Text = $"Files in current directory: {CurrentDirectory}";
+
+            
+            LoadLabel();
         }
         private void ParentButtonClicked()
         {
@@ -89,6 +94,20 @@ namespace JSONgenerator.Presentation.Windows
                 CurrentDirectory = Directory.GetParent(CurrentDirectory)!.FullName;
                 LoadFiles();
             }
+        }
+        private void EnterButtonClicked()
+        {
+            var selectedItem = _table.SelectedItem;
+            if (_table.SelectedItem != null && _table.SelectedItem.Type == "Folder")
+            {
+                _table.Items.Clear();
+                CurrentDirectory = Path.Combine(CurrentDirectory, selectedItem!.Name);
+                LoadFiles();
+            }
+        }
+        private void LoadLabel()
+        {
+            _label.Text = $"Files in current directory: {CurrentDirectory} ";
         }
     }
 }

@@ -13,8 +13,6 @@ namespace JSONgenerator.Presentation.Components
             ? Items[Math.Min(_selectedIndex, Items.Count - 1)]
             : null;
 
-        //public T SeletedItem => Items[_selectedIndex];
-
         public List<T> Items { get; set; }
 
         private int _count;
