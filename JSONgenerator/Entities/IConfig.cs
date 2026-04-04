@@ -8,12 +8,12 @@ namespace JSONgenerator.Entities
 {
     public interface IConfig
     {
+        public string Name { get; set; }
         public string Sources { get; set; }
         public string Targets { get; set; }
         public string Method { get; set; }
         public string Timing { get; set; }
         public int Count { get; set; }
         public int Size { get; set; }
-        public int NumberOfMethods { get; set; }
     }
 }

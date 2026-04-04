@@ -1,0 +1,16 @@
+[
+ {
+ 	"sources": [
+	xSOURCE
+ 	],
+ 	"targets": [
+	xTARGET
+ 	],
+	"method": "xMETHOD",
+ 	"timing": "AA BB CC DD E",
+ 	"retention": {
+ 		"count": xCOUNT,
+ 		"size": xSIZE
+ 	}
+ }
+]

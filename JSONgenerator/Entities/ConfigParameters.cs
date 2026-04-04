@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using JSONgenerator.Presentation.Windows;
 
 namespace JSONgenerator.Entities
 {
     public class ConfigParameters : IConfig
     {
+        public string Name { get; set; }
         public string Sources { get; set; }
         public string Targets { get; set; }
         public string Method { get; set; }
@@ -15,18 +18,17 @@ namespace JSONgenerator.Entities
         public int Count { get; set; }
         public int Size { get; set; }
         public string Output { get; set; }
-        public int NumberOfMethods { get; set; }
 
-        public ConfigParameters(string sources, string targets, string method, string timing, int count, int size)
+        public ConfigParameters()
         {
-            Sources = sources;
-            Targets = targets;
-            Method = method;
-            Timing = timing;
-            Count = count;
-            Size = size;
+            Name = "BackupConfig";
+            Sources = string.Empty;
+            Targets = string.Empty;
+            Method = "Full";
+            Timing = string.Empty;
+            Count = 1;
+            Size = 1;
             Output = GetOutput();
-            NumberOfMethods = 0;
         }
 
         private string GetOutput()
@@ -41,6 +43,11 @@ namespace JSONgenerator.Entities
                             + "\\Data\\Output";
 
             return OutputDir;
+        }
+        public void CreateConfig(string path)
+        {
+            string json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(path, json);
         }
     }
 }

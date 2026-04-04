@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using JSONgenerator.Entities;
+using JSONgenerator.Data;
 
 namespace JSONgenerator.Presentation.Windows
 {
     public class MainMenu : BaseWindow
     {
+
         public FileItem FileItem { get; set; }
 
         public string CurrentDirectory { get; set; }
@@ -40,7 +42,7 @@ namespace JSONgenerator.Presentation.Windows
 
             _table = new Table<FileItem>();
 
-            _createButton = new Button("Add", true);
+            _createButton = new Button("Create", true);
             _editButton = new Button("Edit", true);
             _parentButton = new Button("Return to parent folder", true);
             _enterButton = new Button("Enter folder", true);
@@ -54,13 +56,15 @@ namespace JSONgenerator.Presentation.Windows
 
             _parentButton.Clicked += ParentButtonClicked;
             _enterButton.Clicked += EnterButtonClicked;
+            _createButton.Clicked += CreateButtonClicked;
 
             LoadFiles();
 
         }
         private void LoadFiles()
         {
-            Console.Clear();y
+            Console.Clear();
+            _table.Items.Clear();
             foreach (string dir in Directory.GetDirectories(CurrentDirectory))
             {
 
@@ -102,12 +106,25 @@ namespace JSONgenerator.Presentation.Windows
             {
                 _table.Items.Clear();
                 CurrentDirectory = Path.Combine(CurrentDirectory, selectedItem!.Name);
-                LoadFiles();
             }
+            LoadFiles();
         }
         private void LoadLabel()
         {
             _label.Text = $"Files in current directory: {CurrentDirectory} ";
+        }
+        private void CreateButtonClicked()
+        {
+            ConfigParameters parameter = new ConfigParameters();
+            IWindow window = new ConfigAddEditWindow(parameter, _application, this);
+            window.Submitted += () =>
+            {
+                parameter.CreateConfig(Path.Combine(CurrentDirectory, parameter.Name + ".json"));
+                LoadFiles();
+            };
+            window.Show();
+            
+
         }
     }
 }

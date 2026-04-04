@@ -4,23 +4,20 @@ namespace JSONgenerator.Presentation.Windows
 {
     public class DialogWindow : BaseWindow
     {
-        private Label _questionLabel;
-        private Button _yesButton;
-        private Button _noButton;
+        private Label _label;
+        private Button _okButton;
 
-        public DialogWindow(string title, string question, Application application, IWindow? returnWindow = null) 
+        public DialogWindow(string title, string text, Application application, IWindow? returnWindow = null) 
             : base(title, application, returnWindow)
         {
-            _questionLabel = new Label(question);
-            _yesButton = new Button("Yes", true);
-            _noButton = new Button("No", true);
+            _label = new Label(text);
+            _okButton = new Button("OK", true);
 
-            RegisterComponent(_questionLabel);
-            RegisterComponent(_yesButton);
-            RegisterComponent(_noButton);
+            RegisterComponent(_label);
+            RegisterComponent(_okButton);
 
-            _yesButton.Clicked += Submit;
-            _noButton.Clicked += Close;
+            _okButton.Clicked += Submit;
+
         }
     }
 }
