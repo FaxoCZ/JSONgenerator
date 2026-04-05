@@ -14,6 +14,7 @@ namespace JSONgenerator.Presentation.Windows
     {
 
         public FileItem FileItem { get; set; }
+        public FileCreatorEditor FileCreator { get; set; }
 
         public string CurrentDirectory { get; set; }
 
@@ -38,6 +39,8 @@ namespace JSONgenerator.Presentation.Windows
 
             FileItem = new FileItem("", 0, DateTime.Now, "");
 
+            FileCreator = new FileCreatorEditor(new ConfigParameters());
+
             _label = new Label("");
 
             _table = new Table<FileItem>();
@@ -57,10 +60,13 @@ namespace JSONgenerator.Presentation.Windows
             _parentButton.Clicked += ParentButtonClicked;
             _enterButton.Clicked += EnterButtonClicked;
             _createButton.Clicked += CreateButtonClicked;
+            _editButton.Clicked += EditButtonClicked;
 
             LoadFiles();
 
         }
+         
+
         private void LoadFiles()
         {
             Console.Clear();
@@ -109,22 +115,51 @@ namespace JSONgenerator.Presentation.Windows
             }
             LoadFiles();
         }
-        private void LoadLabel()
+        private void EditButtonClicked()
         {
-            _label.Text = $"Files in current directory: {CurrentDirectory} ";
-        }
-        private void CreateButtonClicked()
-        {
-            ConfigParameters parameter = new ConfigParameters();
+            FileCreatorEditor creator = new FileCreatorEditor(new ConfigParameters());
+
+            var selectedItem = _table.SelectedItem;
+
+            if (selectedItem == null || selectedItem.Name.Substring(selectedItem.Name.Length - 5) != ".json")
+                return;
+
+            
+
+            string fullPath = Path.Combine(CurrentDirectory, selectedItem.Name);
+
+            ConfigParameters parameter = creator.LoadFromFile(fullPath);
+            parameter.Name = selectedItem.Name.Substring(0, selectedItem.Name.Length - 5);
+            parameter.Output = fullPath;
+
             IWindow window = new ConfigAddEditWindow(parameter, _application, this);
             window.Submitted += () =>
             {
-                parameter.CreateConfig(Path.Combine(CurrentDirectory, parameter.Name + ".json"));
+                FileCreatorEditor creator = new FileCreatorEditor(parameter);
+                creator.CreateFile();
+
                 LoadFiles();
             };
             window.Show();
-            
+        }
 
+        private void CreateButtonClicked()
+        {
+            ConfigParameters parameter = new ConfigParameters();
+            FileCreatorEditor creator = new FileCreatorEditor(parameter);
+            parameter.Output = CurrentDirectory;
+            IWindow window = new ConfigAddEditWindow(parameter, _application, this);
+
+            window.Submitted += () =>
+            {
+                creator.CreateFile();
+                LoadFiles();
+            };
+            window.Show();
+        }
+        private void LoadLabel()
+        {
+            _label.Text = $"Files in current directory: {CurrentDirectory} ";
         }
     }
 }

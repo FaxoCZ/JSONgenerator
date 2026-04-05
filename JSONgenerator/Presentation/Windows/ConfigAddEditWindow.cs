@@ -23,7 +23,7 @@ namespace JSONgenerator.Presentation.Windows
         private TextBox _countTextBox;
         private TextBox _sizeTextBox;
         private TextBox _outputTextBox;
-        private TextBox _numberOfMethodsTextBox;
+        //private TextBox _numberOfMethodsTextBox;
 
         private Button _saveButton;
         private Button _cancelButton;
@@ -67,25 +67,25 @@ namespace JSONgenerator.Presentation.Windows
 
         private void SetComponentValues()
         {
-            _nameTextBox.Value = _parameters.Name;
-            _sourcesTextBox.Value = _parameters.Sources;
-            _targetsTextBox.Value = _parameters.Targets;
+            _nameTextBox.Value = _parameters.Name!;
+            _sourcesTextBox.Value = string.Join(", ", _parameters.Sources);
+            _targetsTextBox.Value = string.Join(", ", _parameters.Targets);
             _methodTextBox.Value = _parameters.Method ?? "Full";
             _timingTextBox.Value = _parameters.Timing ?? "";
-            _countTextBox.Value = Convert.ToString(_parameters.Count) ?? "";
-            _sizeTextBox.Value = Convert.ToString(_parameters.Size)!;
-            _outputTextBox.Value = _parameters.Output;
+            _countTextBox.Value = Convert.ToString(_parameters.retention.Count) ?? "";
+            _sizeTextBox.Value = Convert.ToString(_parameters.retention.Size)!;
+            _outputTextBox.Value = _parameters.Output!;
         }
 
         private void SetEntityValues()
         {
             _parameters.Name = _nameTextBox.Value;
-            _parameters.Sources = _sourcesTextBox.Value;
-            _parameters.Targets = _targetsTextBox.Value;
+            _parameters.Sources = _sourcesTextBox.Value.Split(',').Select(x => x.Trim()).ToList();
+            _parameters.Targets = _targetsTextBox.Value.Split(',').Select(x => x.Trim()).ToList();
             _parameters.Method = _methodTextBox.Value;
             _parameters.Timing = _timingTextBox.Value;
-            _parameters.Count = Convert.ToInt32(_countTextBox.Value);
-            _parameters.Size = Convert.ToInt32(_sizeTextBox.Value);
+            _parameters.retention.Count = Convert.ToInt32(_countTextBox.Value);
+            _parameters.retention.Size = Convert.ToInt32(_sizeTextBox.Value);
             _parameters.Output = _outputTextBox.Value;
         }
 
@@ -106,7 +106,7 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void DataInvalid()
         {
-            IWindow dialog = new DialogWindow("Invalid data", "Please try again.", _application, this);
+            IWindow dialog = new InvalidWindow("Invalid data", "Please try again.", _application, this);
             dialog.Show();
         }
     }

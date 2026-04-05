@@ -16,7 +16,7 @@ namespace JSONgenerator.Data
         private Regex _timing;
         private Regex _count;
         private Regex _size;
-        private int _numberOfMehthods;
+        //private int _numberOfMehthods;
 
         public DataValidator()
         {
@@ -31,12 +31,12 @@ namespace JSONgenerator.Data
         {
             if (CheckNulls(parameters))
                 return false;
-            if (_sources.IsMatch(parameters.Sources) &&
-                _targets.IsMatch(parameters.Targets) &&
+            if (parameters.Sources.Any() && parameters.Sources.All(s => _sources.IsMatch(s)) &&
+                parameters.Sources.Any() && parameters.Sources.All(t => _targets.IsMatch(t)) &&
                 _method.IsMatch(parameters.Method) &&
                 _timing.IsMatch(parameters.Timing) &&
-                _count.IsMatch(parameters.Count.ToString()) &&
-                _size.IsMatch(parameters.Size.ToString())
+                _count.IsMatch(parameters.retention.Count.ToString()) &&
+                _size.IsMatch(parameters.retention.Size.ToString())
                 )
                 return true;
             return false;
