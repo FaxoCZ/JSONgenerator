@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Template\" />
+    <Compile Remove="Data\Template\**" />
+    <EmbeddedResource Remove="Data\Template\**" />
+    <None Remove="Data\Template\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\Output\" />
   </ItemGroup>
 

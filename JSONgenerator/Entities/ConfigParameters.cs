@@ -33,29 +33,35 @@ namespace JSONgenerator.Entities
         }
         [JsonIgnore]
         public string? Output { get; set; }
+        //[JsonIgnore]
+        //public int NumberOfMethods { get; set; }
+        [JsonIgnore]
+        public int NumberOfSources { get; set; }
+        [JsonIgnore]
+        public int NumberOfTargets { get; set; }
 
-        public ConfigParameters()
-        {
-            Name = "BackupConfig";
-            Sources = new List<string>();
-            Targets = new List<string>();
-            Method = "Full";
-            Timing = string.Empty;
-            Output = GetOutput();
-        }
+public ConfigParameters()
+{
+    Name = "BackupConfig";
+    Sources = new List<string>();
+    Targets = new List<string>();
+    Method = "Full";
+    Timing = string.Empty;
+    Output = GetOutput();
+}
 
-        private string GetOutput()
-        {
-            string OutputDir = Directory.GetParent(
-                Directory.GetParent(
-                    Directory.GetParent(
-                            Directory.GetCurrentDirectory())!
-                            .FullName)!
-                            .FullName)!
-                            .FullName
-                            + "\\Data\\Output";
+private string GetOutput()
+{
+    string OutputDir = Directory.GetParent(
+        Directory.GetParent(
+            Directory.GetParent(
+                    Directory.GetCurrentDirectory())!
+                    .FullName)!
+                    .FullName)!
+                    .FullName
+                    + "\\Data\\Output";
 
-            return OutputDir;
-        }
-    }
+    return OutputDir;
+}
+}
 }

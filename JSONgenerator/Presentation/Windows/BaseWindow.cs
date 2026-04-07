@@ -11,7 +11,7 @@ namespace JSONgenerator.Presentation.Windows
         protected Application _application;
         protected IWindow? _returnWindow;
 
-        private List<IComponent> _components;
+        public List<IComponent> _components;
         private int _selectedIndex;
 
         protected BaseWindow(string title, Application application, IWindow? returnWindow = null)

@@ -89,9 +89,12 @@ namespace JSONgenerator.Presentation.Components
 
         private void RenderRow(List<string>? values, char sep, char pad, bool selected, ConsoleColor color)
         {
-            for (int i = 0; i < _widths.Capacity; i++)
+            for (int i = 0; i < _widths.Count; i++)
             {
-                string value = values != null ? values[i] : string.Empty;
+                string value = (values != null && i < values.Count)
+                ? values[i]
+                : string.Empty;
+
                 string text = value.PadRight(_widths[i], pad);
                 ConsoleHelper.WriteConditionalColor($"{sep}{pad}{text}{pad}", selected, color);
             }
@@ -104,7 +107,7 @@ namespace JSONgenerator.Presentation.Components
             {
                 foreach (List<string> row in rows)
                 {
-                    if (row[i].Length > _widths[i])
+                    if (i < row.Count && row[i].Length > _widths[i])
                         _widths[i] = row[i].Length;
                 }
             }
@@ -122,7 +125,16 @@ namespace JSONgenerator.Presentation.Components
         {
             return type
                 .GetProperties()
-                .Select(p => p.GetValue(obj)?.ToString() ?? string.Empty)
+                .Where(p => p.GetIndexParameters().Length == 0)
+                .Select(p =>
+                {
+                    var value = p.GetValue(obj);
+
+                    if (value is IEnumerable<string> list)
+                        return string.Join(", ", list);
+
+                    return value?.ToString() ?? string.Empty;
+                })
                 .ToList();
         }
     }

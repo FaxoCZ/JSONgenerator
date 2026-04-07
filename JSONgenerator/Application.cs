@@ -49,6 +49,7 @@ namespace JSONgenerator
         {
             Console.SetCursorPosition(0, 0);
             _activeWindow?.Render();
+
         }
 
         protected void HandleKey(ConsoleKeyInfo keyInfo)
