@@ -33,8 +33,6 @@ namespace JSONgenerator.Entities
         }
         [JsonIgnore]
         public string? Output { get; set; }
-        //[JsonIgnore]
-        //public int NumberOfMethods { get; set; }
         [JsonIgnore]
         public int NumberOfSources { get; set; }
         [JsonIgnore]

@@ -1,4 +1,4 @@
-﻿using JSONgenerator.Data;
+﻿using JSONgenerator.Entities;
 using JSONgenerator.Entities;
 using JSONgenerator.Presentation.Components;
 using System;
@@ -23,7 +23,6 @@ namespace JSONgenerator.Presentation.Windows
         private TextBox _countTextBox;
         private TextBox _sizeTextBox;
         private TextBoxEnter _outputTextBoxEnter;
-        //private TextBox _numberOfMethodsTextBox;
 
         private Button _saveButton;
         private Button _cancelButton;
@@ -126,7 +125,7 @@ namespace JSONgenerator.Presentation.Windows
         private void SourcesTextBoxEnterClicked()
         {
             
-            NOWindow sourcewindow = new NOWindow(_sourcesTextBoxEnter.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList(),"", _application, this);
+            NOWindow sourcewindow = new NOWindow(GetValue(_sourcesTextBoxEnter),"", _application, this);
             sourcewindow.Submitted += (value) =>
             {
                 if (_sourcesTextBoxEnter.Value == "")
@@ -143,7 +142,7 @@ namespace JSONgenerator.Presentation.Windows
         private void TargetsTextBoxEnterClicked()
         {
 
-            NOWindow targetswindow = new NOWindow(_targetsTextBoxEnter.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList(), "", _application, this);
+            NOWindow targetswindow = new NOWindow(GetValue(_targetsTextBoxEnter), "", _application, this);
             targetswindow.Submitted += (value) =>
             {
                 if (_targetsTextBoxEnter.Value == "")
@@ -159,8 +158,10 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void OutputTextBoxEnterClicked()
         {
+            if (_outputTextBoxEnter.Value != "")
+                return;
 
-            IWindow outputwindow = new NOWindow(_outputTextBoxEnter.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList(), "", _application, this);
+            IWindow outputwindow = new NOWindow(GetValue(_outputTextBoxEnter), "", _application, this);
             ((NOWindow)outputwindow).Submitted += (value) =>
             {
                 if (_outputTextBoxEnter.Value == "")
@@ -176,7 +177,7 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void OutputTextBoxEnterDeleted()
         {
-            IWindow deleteWindow = new DeletingWindow(_outputTextBoxEnter.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList(), "", _application, this);
+            IWindow deleteWindow = new DeletingWindow(GetValue(_outputTextBoxEnter), "", _application, this);
             ((DeletingWindow)deleteWindow).Submitted += (value) =>
             {
                 _outputTextBoxEnter.Value = (value);
@@ -185,7 +186,7 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void SourcesTextBoxEnterDeleted()
         {
-            IWindow deleteWindow = new DeletingWindow(_sourcesTextBoxEnter.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList(), "", _application, this);
+            IWindow deleteWindow = new DeletingWindow(GetValue(_sourcesTextBoxEnter), "", _application, this);
             ((DeletingWindow)deleteWindow).Submitted += (value) =>
             {
                 _sourcesTextBoxEnter.Value = (value);
@@ -194,12 +195,16 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void TargetTextBoxEnterDeleted()
         {
-            IWindow targetWindow = new DeletingWindow(_targetsTextBoxEnter.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList(), "", _application, this);
+            IWindow targetWindow = new DeletingWindow(GetValue(_targetsTextBoxEnter), "", _application, this);
             ((DeletingWindow)targetWindow).Submitted += (value) =>
             {
                 _targetsTextBoxEnter.Value = (value);
             };
             targetWindow.Show();
+        }
+        private List<string> GetValue(TextBoxEnter list)
+        {
+            return list.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList();
         }
     }
 }

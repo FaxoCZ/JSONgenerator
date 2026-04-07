@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using JSONgenerator.Entities;
-using JSONgenerator.Data;
 
 namespace JSONgenerator.Presentation.Windows
 {
@@ -132,15 +131,23 @@ namespace JSONgenerator.Presentation.Windows
             parameter.Name = selectedItem.Name.Substring(0, selectedItem.Name.Length - 5);
             parameter.Output = fullPath;
 
-            IWindow window = new ConfigAddEditWindow(parameter, _application, this);
-            window.Submitted += () =>
-            {
-                FileCreatorEditor creator = new FileCreatorEditor(parameter);
-                creator.CreateFile();
 
-                LoadFiles();
+            IWindow methodwindow = new MethodsWindow(parameter, "Methods found: ", _application, this);
+            methodwindow.Submitted += () =>
+            {
+                IWindow window = new ConfigAddEditWindow(parameter, _application, this);
+                window.Submitted += () =>
+                {
+                    FileCreatorEditor creator = new FileCreatorEditor(parameter);
+                    creator.CreateFile();
+
+                    LoadFiles();
+                };
+                window.Show();
             };
-            window.Show();
+            methodwindow.Show();
+
+           
         }
 
         private void CreateButtonClicked()
@@ -148,6 +155,9 @@ namespace JSONgenerator.Presentation.Windows
             ConfigParameters parameter = new ConfigParameters();
             FileCreatorEditor creator = new FileCreatorEditor(parameter);
             parameter.Output = CurrentDirectory;
+
+
+
             IWindow window = new ConfigAddEditWindow(parameter, _application, this);
 
             window.Submitted += () =>

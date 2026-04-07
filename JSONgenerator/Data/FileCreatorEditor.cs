@@ -1,47 +1,56 @@
 ﻿using JSONgenerator.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace JSONgenerator.Data
+namespace JSONgenerator.Entities
 {
     public class FileCreatorEditor
     {
         ConfigParameters _parameters;
+        CparametersList root;
 
         public FileCreatorEditor(ConfigParameters parameters)
         {
             _parameters = parameters;
+            root = new CparametersList();
 
         }
         public void CreateFile()
         {
-            var options = new JsonSerializerOptions();
-            options.WriteIndented = true;
+            var options = new JsonSerializerOptions { WriteIndented = true };
 
-            string outputPath = _parameters.Output!;
+            string filePath = Path.Combine(_parameters.Output!, _parameters.Name + ".json");
 
-            string json = JsonSerializer.Serialize(_parameters, options);
-            if (Path.HasExtension(outputPath))
+
+            if (File.Exists(filePath))
             {
-                outputPath = Path.GetDirectoryName(outputPath)!;
+                string existingJson = File.ReadAllText(filePath);
+                root = JsonSerializer.Deserialize<CparametersList>(existingJson) ?? new CparametersList();
+            }
+            else
+            {
+                root = new CparametersList();
             }
 
-            File.WriteAllText(
-                Path.Combine(outputPath, _parameters.Name + ".json"),
-                json
-            );
-        
+            // 🔑 tady je fix — přidání místo přepsání
+            root.Methods.Add(_parameters);
+
+            string json = JsonSerializer.Serialize(root, options);
+            File.WriteAllText(filePath, json);
         }
-        public ConfigParameters LoadFromFile(string path)
+        public List<ConfigParameters> LoadFromFile(string path)
         {
             string json = File.ReadAllText(path);
 
-            return JsonSerializer.Deserialize<ConfigParameters>(json)!;
+            var root = JsonSerializer.Deserialize<CparametersList>(json);
+
+            return root?.Methods ?? new List<ConfigParameters>();
         }
     }
 }

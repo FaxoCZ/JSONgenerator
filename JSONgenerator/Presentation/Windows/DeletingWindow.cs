@@ -1,5 +1,4 @@
-﻿using JSONgenerator.Data;
-using JSONgenerator.Entities;
+﻿using JSONgenerator.Entities;
 using JSONgenerator.Presentation.Components;
 using System;
 using System.Collections.Generic;
