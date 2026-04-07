@@ -23,6 +23,8 @@ namespace JSONgenerator.Entities
         }
         public void CreateFile()
         {
+
+
             JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
 
             string output = _parameters.Output!.Trim();

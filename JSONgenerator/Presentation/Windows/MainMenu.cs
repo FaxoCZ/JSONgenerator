@@ -124,7 +124,11 @@ namespace JSONgenerator.Presentation.Windows
             string fullPath = Path.Combine(CurrentDirectory, selectedItem.Name);
 
             IWindow methodWindow = new MethodsWindow(
-                new ConfigParameters { Output = fullPath },
+                new ConfigParameters
+                { 
+                    Output = fullPath,
+                    Name = Path.GetFileNameWithoutExtension(fullPath)
+                },
                 selectedItem.Name,
                 _application,
                 this

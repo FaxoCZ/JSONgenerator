@@ -1,5 +1,4 @@
 ﻿using JSONgenerator.Entities;
-using JSONgenerator.Entities;
 using JSONgenerator.Presentation.Components;
 using System;
 using System.Collections.Generic;
@@ -44,7 +43,15 @@ namespace JSONgenerator.Presentation.Windows
             _nameTextBox = new TextBox("Name: ", 20);
             _sourcesTextBoxEnter = new TextBoxEnter("Sources: ", 0, false);
             _targetsTextBoxEnter = new TextBoxEnter("Targets: ", 0, false);
-            _methodTextBox = new TextBox("Method: ", 10, false);
+            if (_parameters.Method == "Full")
+            {
+                _methodTextBox = new TextBox("Method: ", 0, false);
+            }
+            else
+            {
+                _methodTextBox = new TextBox("Method: ", 12, false);
+            }
+
             _timingTextBox = new TextBox("Timing: ", 10);
             _countTextBox = new TextBox("Count: ", 2);
             _sizeTextBox = new TextBox("Size: ", 2);
@@ -85,6 +92,7 @@ namespace JSONgenerator.Presentation.Windows
 
         private void SetComponentValues()
         {
+            
             _nameTextBox.Value = _parameters.Name;
             _sourcesTextBoxEnter.Value = string.Join(", ", _parameters.Sources);
             _targetsTextBoxEnter.Value = string.Join(", ", _parameters.Targets);
@@ -97,7 +105,13 @@ namespace JSONgenerator.Presentation.Windows
 
         private void SetEntityValues()
         {
-            if(_parameters.retention == null)
+            if (_methodTextBox.Value != "Full" && _methodTextBox.Value != "Incremental" && _methodTextBox.Value != "Differential")
+            {
+                _methodTextBox.Value = "Full";
+            }
+
+
+            if (_parameters.retention == null)
             {
                 _parameters.retention = new ConfigParameters.Retention();
             }

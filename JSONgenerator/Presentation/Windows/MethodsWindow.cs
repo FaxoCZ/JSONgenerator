@@ -80,9 +80,12 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void AddButtonClicked()
         {
+            var methods = _methods;
+
             ConfigParameters newParameter = new ConfigParameters
             {
-                Name = Path.GetFileNameWithoutExtension(_configParameters.Name)
+                Name = Path.GetFileNameWithoutExtension(_configParameters.Name),
+                Method = methods.Count == 0 ? "Full" : "Incremental"
             };
 
             FileCreatorEditor editor = new FileCreatorEditor(newParameter);
