@@ -106,7 +106,7 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void EnterButtonClicked()
         {
-            var selectedItem = _table.SelectedItem;
+            FileItem selectedItem = _table.SelectedItem!;
             if (_table.SelectedItem != null && _table.SelectedItem.Type == "Folder")
             {
                 _table.Items.Clear();
@@ -116,38 +116,23 @@ namespace JSONgenerator.Presentation.Windows
         }
         private void EditButtonClicked()
         {
-            FileCreatorEditor creator = new FileCreatorEditor(new ConfigParameters());
+            FileItem selectedItem = _table.SelectedItem!;
 
-            var selectedItem = _table.SelectedItem;
-
-            if (selectedItem == null || selectedItem.Name.Substring(selectedItem.Name.Length - 5) != ".json")
+            if (selectedItem == null || selectedItem.Name.EndsWith(".json") == false)
                 return;
-
-            
 
             string fullPath = Path.Combine(CurrentDirectory, selectedItem.Name);
 
-            ConfigParameters parameter = creator.LoadFromFile(fullPath);
-            parameter.Name = selectedItem.Name.Substring(0, selectedItem.Name.Length - 5);
-            parameter.Output = fullPath;
+            IWindow methodWindow = new MethodsWindow(
+                new ConfigParameters { Output = fullPath },
+                selectedItem.Name,
+                _application,
+                this
+            );
 
 
-            IWindow methodwindow = new MethodsWindow(parameter, "Methods found: ", _application, this);
-            methodwindow.Submitted += () =>
-            {
-                IWindow window = new ConfigAddEditWindow(parameter, _application, this);
-                window.Submitted += () =>
-                {
-                    FileCreatorEditor creator = new FileCreatorEditor(parameter);
-                    creator.CreateFile();
-
-                    LoadFiles();
-                };
-                window.Show();
-            };
-            methodwindow.Show();
-
-           
+            methodWindow.Submitted += () => { };
+            methodWindow.Show();
         }
 
         private void CreateButtonClicked()

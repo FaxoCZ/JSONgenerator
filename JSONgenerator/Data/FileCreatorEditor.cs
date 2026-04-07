@@ -23,9 +23,24 @@ namespace JSONgenerator.Entities
         }
         public void CreateFile()
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
 
-            string filePath = Path.Combine(_parameters.Output!, _parameters.Name + ".json");
+            string output = _parameters.Output!.Trim();
+
+            string filePath;
+
+            if (Path.HasExtension(output))
+            {
+                filePath = output;
+            }
+            else
+            {
+                string name = string.IsNullOrWhiteSpace(_parameters.Name)
+                    ? "default"
+                    : Path.GetFileNameWithoutExtension(_parameters.Name.Trim());
+
+                filePath = Path.Combine(output, name + ".json");
+            }
 
 
             if (File.Exists(filePath))
@@ -38,7 +53,6 @@ namespace JSONgenerator.Entities
                 root = new CparametersList();
             }
 
-            // 🔑 tady je fix — přidání místo přepsání
             root.Methods.Add(_parameters);
 
             string json = JsonSerializer.Serialize(root, options);
@@ -46,10 +60,11 @@ namespace JSONgenerator.Entities
         }
         public List<ConfigParameters> LoadFromFile(string path)
         {
+            
             string json = File.ReadAllText(path);
 
-            var root = JsonSerializer.Deserialize<CparametersList>(json);
-
+            JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            CparametersList root = JsonSerializer.Deserialize<CparametersList>(json)!;
             return root?.Methods ?? new List<ConfigParameters>();
         }
     }

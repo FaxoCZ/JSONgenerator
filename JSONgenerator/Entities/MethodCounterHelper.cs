@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace JSONgenerator.Entities
 {
@@ -10,10 +11,13 @@ namespace JSONgenerator.Entities
     {
         public int Number { get; set; }
         public string Method { get; set; }
-        public MethodCounterHelper(string method)
+        [JsonIgnore]
+        public ConfigParameters Parameter;
+        public MethodCounterHelper(ConfigParameters parameter, int number)
         {
-            Number = 0;
-            Method = method;
+            Number = number;
+            Parameter = parameter;
+            Method = parameter.Method;
         }
 
     }

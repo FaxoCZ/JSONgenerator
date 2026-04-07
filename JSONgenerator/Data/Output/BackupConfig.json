@@ -1,33 +1,46 @@
 {
-  "sources": [
-    "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output",
-    "C:\\Users\\faxou\\Desktop\\BackupProject",
-    "C:\\",
-    "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
-  ],
-  "targets": [
-    "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
-  ],
-  "method": "Full",
-  "timing": "1 1 1 1 1",
-  "retention": {
-    "count": 1,
-    "size": 1
-  },
-
-  "sources": [
-    "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output",
-    "C:\\Users\\faxou\\Desktop\\BackupProject",
-    "C:\\",
-    "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
-  ],
-  "targets": [
-    "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
-  ],
-  "method": "Incremental",
-  "timing": "1 1 1 1 1",
-  "retention": {
-    "count": 1,
-    "size": 1
-  }
+  "Methods": [
+    {
+      "sources": [
+        "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
+      ],
+      "targets": [
+        "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
+      ],
+      "method": "Full",
+      "timing": "1 1 1 1 1",
+      "retention": {
+        "count": 1,
+        "size": 1
+      }
+    },
+    {
+      "sources": [
+        "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
+      ],
+      "targets": [
+        "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
+      ],
+      "method": "Full",
+      "timing": "2 2 2 2 2",
+      "retention": {
+        "count": 1,
+        "size": 1
+      }
+    },
+    {
+      "sources": [
+        "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
+      ],
+      "targets": [
+        "C:\\Users\\faxou\\Desktop\\BackupProject\\JSONgenerator\\JSONgenerator\\Data\\Output"
+      ],
+      "method": "Full",
+      "timing": "3 3 3 3 3",
+      "retention": {
+        "count": 1,
+        "size": 1
+      }
+    }
+  ]
 }

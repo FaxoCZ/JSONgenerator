@@ -4,6 +4,7 @@ using JSONgenerator.Presentation.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,19 +28,23 @@ namespace JSONgenerator.Presentation.Windows
         private Button _saveButton;
         private Button _cancelButton;
         private Button _addSourceButton;
-        private Button _addTargetButton;
+        private Button _addTargetButton;        
+
+        private CparametersList _parametersList;
 
         public ConfigAddEditWindow(ConfigParameters parameters, Application application, IWindow? returnWindow = null)
             : base("JSON editor", application, returnWindow)
         {
             _parameters = parameters;
 
+            _parametersList = new CparametersList();
+
             DataValidator = new DataValidator();
 
             _nameTextBox = new TextBox("Name: ", 20);
             _sourcesTextBoxEnter = new TextBoxEnter("Sources: ", 0, false);
             _targetsTextBoxEnter = new TextBoxEnter("Targets: ", 0, false);
-            _methodTextBox = new TextBox("Method: ", 12, false);
+            _methodTextBox = new TextBox("Method: ", 10, false);
             _timingTextBox = new TextBox("Timing: ", 10);
             _countTextBox = new TextBox("Count: ", 2);
             _sizeTextBox = new TextBox("Size: ", 2);
@@ -80,7 +85,7 @@ namespace JSONgenerator.Presentation.Windows
 
         private void SetComponentValues()
         {
-            _nameTextBox.Value = _parameters.Name!;
+            _nameTextBox.Value = _parameters.Name;
             _sourcesTextBoxEnter.Value = string.Join(", ", _parameters.Sources);
             _targetsTextBoxEnter.Value = string.Join(", ", _parameters.Targets);
             _methodTextBox.Value = _parameters.Method ?? "Full";
@@ -92,6 +97,10 @@ namespace JSONgenerator.Presentation.Windows
 
         private void SetEntityValues()
         {
+            if(_parameters.retention == null)
+            {
+                _parameters.retention = new ConfigParameters.Retention();
+            }
             _parameters.Name = _nameTextBox.Value;
             _parameters.Sources = _sourcesTextBoxEnter.Value.Split(',').Select(x => x.Trim()).Where(x => x.Length > 0).ToList();
             _parameters.Targets = _targetsTextBoxEnter.Value.Split(',').Select(y => y.Trim()).Where(y => y.Length > 0).ToList();
